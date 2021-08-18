@@ -1,0 +1,7 @@
+kind: gvc
+name: github-actions-example-cli-gvc
+description: Actions Example
+spec:
+  staticPlacement:
+    locationLinks:
+      - /org/ORG_NAME/location/aws-us-west-2

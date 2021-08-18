@@ -1,0 +1,63 @@
+# Control Plane Github Action
+
+name: Deploy-To-Control-Plane
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  CPLN_ORG: ${{secrets.CPLN_ORG}}
+  CPLN_TOKEN: ${{secrets.CPLN_TOKEN}}
+  CPLN_IMAGE: ${{secrets.CPLN_IMAGE_NAME}}
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  deploy-to-control-plane:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Set Short SHA
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: Control Plane CLI - Install
+        shell: bash
+        run: |
+          wget -q https://github.com/mikefarah/yq/releases/download/3.3.2/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq 
+          sudo npm install -g @controlplane/cli
+          cpln --version
+   
+      # Image is pushed to the org's private repository
+      - name: Containerize application and push image
+        shell: bash
+        run: |
+          cpln image docker-login
+          docker build -t ${CPLN_ORG}.registry.cpln.io/${CPLN_IMAGE}:${{steps.vars.outputs.sha_short}} .
+          docker push ${CPLN_ORG}.registry.cpln.io/${CPLN_IMAGE}:${{steps.vars.outputs.sha_short}}
+
+      - name: Substitute Tokens in Control Plane YAML Files
+        shell: bash
+        working-directory: ./cpln
+        run: |
+          sed -i "s/ORG_NAME/${CPLN_ORG}/" cpln-gvc.yaml
+          sed -i "s/IMAGE_NAME_TAG/${CPLN_IMAGE}:${{steps.vars.outputs.sha_short}}/" cpln-workload.yaml
+
+      - name: Run CPLN Apply 
+        shell: bash
+        working-directory: ./cpln
+        run: |
+          cpln apply -f cpln-gvc.yaml
+          cpln apply -f cpln-workload.yaml --gvc $(yq r cpln-gvc.yaml name) 
+
+
