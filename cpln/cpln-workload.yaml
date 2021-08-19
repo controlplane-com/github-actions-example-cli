@@ -1,11 +1,11 @@
 kind: workload
-name: github-cicd-example-cli-workload
+name: github-actions-example-cli-workload
 spec:
   containers:
     - args: []
       cpu: 50m
       env: []
-      name: "cicd-example"
+      name: "actions-example"
       image: "//image/IMAGE_NAME_TAG"
       memory: 128Mi 
       port: 8080

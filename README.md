@@ -1,6 +1,8 @@
 # Control Plane - GitHub Actions Example Using the CLI
 
-This example demonstrates how to build and deploy your application to Control Plane using the CLI as part of a CI/CD pipeline. It can be used as a template for your application.
+This example demonstrates how to build and deploy your application to Control Plane using the CLI as part of a CI/CD pipeline. 
+
+It can be used as a template for your application.
 
 ## Script Overview
 
@@ -24,12 +26,12 @@ This example demonstrates how to build and deploy your application to Control Pl
     - `CPLN_TOKEN`: Generated Service Account Key
     - `CPLN_IMAGE_NAME`: The name of the image that will be deployed. The action will append the short SHA of the commit when pushing the image to the org's private image repository.
 
-- Review the resources in the YAML files in the `/cpln` directory and updated as necessary. 
-
 - Review the `.github/workflows/deploy-to-control-plane.yml` file
     - Update the `on` block with the branches / dispatch rules this action will trigger on. The `workflow_dispatch` element will allow the action to be manually triggered.
     - Step starting on line 49: Update any substitutions needed within the YAML files. The example updates the org name in the `cpln-gvc.yaml` file and the image name and tag in the `cpln-workload.yml` file.
     - Step starting on line 56: Add any additional `cpln apply` commands.  After the `cpln apply` for the GVC is executed, the subsequent `cpln apply` commands can contain multiple resources separated with the document start marker `---` in the YAML file.
+
+- Review the resources in the YAML files in the `/cpln` directory and updated as necessary. 
 
 ## Notes
 
