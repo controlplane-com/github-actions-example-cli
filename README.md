@@ -1,44 +1,64 @@
 # Control Plane - GitHub Actions Example Using the CLI
 
-This example demonstrates how to build and deploy your application to Control Plane using the CLI as part of a CI/CD pipeline. 
+This example demonstrates how to build and deploy an application to Control Plane using the Control Plane CLI as part of a CI/CD pipeline. 
 
-It can be used as a template for your application.
+The sample application is a Node.js web application that will display the environment variables that exist in the running container and the arguments that were used when executing the container. A sample Dockerfile is included to assist in the building of the container.
 
-## Script Overview
+This example is provided as a starting point and your own unique delivery and/or deployment requirements will dictate the steps needed in your situation.
 
-1. Check out code.
-2. Set commit short SHA as a variable.
-3. Install dependencies:
-    - Control Plane CLI
-    - yq (Optional, used to extract GVC name for use by the `cpln apply` command)
-4. Authenticate, build and push application to the org's private image repository. The short SHA is used as the image tag.
-5. Substitute tokens in the resource YAML files.
-6. Deploy to Control Plane using the `cpln apply` command.
+## Control Plane Authentication Set Up 
 
-## Resources to Create/Update
+The Control Plane CLI require a `Service Account` with the proper permissions to perform actions against the Control Plane API. 
 
-- Create a Control Plane Service Account and add a key
-    - Add the Service Account to the `superusers` group. Once the workflow executes as expected, a policy can be created with a limited set of permissions and the Service Account can be removed from the superusers group.
-    - Create and save a key. It will be used in the next step.
+1. Follow the Control Plane documentation to create a Service Account and create a key. Take a note of the key. It will be used in the next section.
+2. Add the Service Account to the `superusers` group. Once the pipeline executes as expected, a policy can be created with a limited set of permissions and the Service Account can be removed from the `superusers` group.
+   
+## GitHub Set Up
 
-- Add the following variables as repository secrets (settings -> secrets):
-    - `CPLN_ORG`: Org name 
-    - `CPLN_TOKEN`: Generated Service Account Key
-    - `CPLN_IMAGE_NAME`: The name of the image that will be deployed. The action will append the short SHA of the commit when pushing the image to the org's private image repository.
+The example require the following variables be added as a secret:
 
-- Review the `.github/workflows/deploy-to-control-plane.yml` file
-    - Update the `on` block with the branches / dispatch rules this action will trigger on. The `workflow_dispatch` element will allow the action to be manually triggered.
-    - Step starting on line 49: Update any substitutions needed within the YAML files. The example updates the org name in the `cpln-gvc.yaml` file and the image name and tag in the `cpln-workload.yml` file.
-    - Step starting on line 56: Add any additional `cpln apply` commands.  After the `cpln apply` for the GVC is executed, the subsequent `cpln apply` commands can contain multiple resources separated with the document start marker `---` in the YAML file.
+- `CPLN_ORG`: Control Plane org.
+- `CPLN_TOKEN`: Service Account Key.
+- `CPLN_IMAGE_NAME`: The name of the image that will be deployed. The workflow will append the short SHA of the commit when pushing the image to the org's private image repository.
 
-- Review the resources in the YAML files in the `/cpln` directory and updated as necessary. 
+Browse to the Secrets page by clicking `Settings` (top menu bar), then `Secrets` (left menu bar).
+
+## Example Set Up
+
+When triggered, the GitHub action will execute the steps defined in the workflow file located at `.github/workflow/deploy-to-control-plane.yml`. The example will containerize and push the application to the org's private image repository and create/update a GVC and workload hosted at Control Plane. 
+
+**Perform the following steps to set up the example:**
+
+1. Fork the example into your own workspace.
+
+2. Review the `.github/workflow/deploy-to-control-plane.yml` file:
+    - The workflow can be updated to be triggered on specific branches and actions (pushes, pull requests, etc.). The example is set to trigger on a push or pull request to the `main` branch. 
+    - The `sed` command is used to substitute the `ORG_NAME` and `IMAGE_NAME_TAG` tokens within the YAML files in the `/cpln` directory.
+    - The `yq` command is used to extract the GVC name from the `/cpln/cpln-gvc.yaml` file. It is used by the `--gvc` flag when executing the `cpln apply` command for the `cpln-workload.yaml` file.
+
+3. Review the two files in the `/cpln` directory:
+    - The `cpln-gvc.yaml` file defines the GVC to be created/updated. Update the GVC name.
+    - The `cpln-workload.yaml` file defines the workload to be created/updated. Update the workload name.
+
+## Running Example Application
+
+After the pipeline has successfully deployed the application, it can be tested by following these steps:
+
+1. Browse to the Control Plane Console.
+2. Select the GVC that was set in the `/cpln/cpln-gvc.yaml` file.
+3. Select the workload that was set in the `/cpln/cpln-workload.yaml` file.
+4. Click the `Open` button. The example application will open in a new tab. It will display the environment variables that exist in the running container and the arguments that were used when executing the container.
 
 ## Notes
 
-- Using `cpln apply` creates and updates the resources defined within the YAML files. If the name of a resource is changed, `cpln apply` will create a new resource. Any orphaned resources will need to be deleted manually.
+- `cpln apply` creates and updates the resources defined within the YAML file. If the name of a resource is changed, `cpln apply` will create a new resource. Any orphaned resources will need to be manually deleted.
 
-- The Control Plane CLI commands will use the `CPLN_ORG` and `CPLN_TOKEN` environment variables when needed. There is no need to add the --org or --token flags.
+- The Control Plane CLI commands use the `CPLN_ORG` and `CPLN_TOKEN` environment variables when needed. There is no need to add the --org or --token flags when executing CLI commands.
+
+- The GVC definition must exists in its own YAML file. The `cpln apply` command using the file must be executed before any child (workloads, identities, etc.) definition YAML files are executed.
 
 ## Helper Links
+
+GitHub
 
 - <a href="https://docs.github.com/en/actions" target="_blank">GitHub Actions Docs</a>
