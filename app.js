@@ -18,7 +18,7 @@ const server = http.createServer((req, res) => {
 	var myArgs = process.argv;
 	var newDate = new Date();
 
-	res.end('Environment Variables\n\n' + JSON.stringify(ordered, null, 4) + '\n\nArguments:\n\n' + myArgs + '\n\nWelcome to Control Plane!\n\ndev branch\n\nThe time is: ' + newDate.toUTCString());
+	res.end('Environment Variables\n\n' + JSON.stringify(ordered, null, 4) + '\n\nArguments:\n\n' + myArgs + '\n\nWelcome to Control Plane!\n\nThe time is: ' + newDate.toUTCString());
 });
 
 

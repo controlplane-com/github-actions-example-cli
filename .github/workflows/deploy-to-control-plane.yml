@@ -1,10 +1,11 @@
-# Control Plane Github Action
+# Control Plane GitHub Action
 
 name: Deploy-To-Control-Plane
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Uncomment the lines you want actions that will cause the workflow to Triggers the workflow on push or pull request events but only for the main branch
+
   # push:
   #   branches: [main]
   # pull_request:
@@ -13,13 +14,14 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Convert the secret variables to environment variables for use by the Control Plane CLI
+# Convert the GitHub secret variables to environment variables for use by the Control Plane CLI
 env:
   CPLN_ORG: ${{secrets.CPLN_ORG}}
+  CPLN_GVC: ${{secrets.CPLN_GVC}}
+  CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD}}
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE_NAME}}
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   deploy-to-control-plane:
     runs-on: ubuntu-latest
@@ -35,7 +37,6 @@ jobs:
       - name: Install Control Plane CLI
         shell: bash
         run: |
-          wget -q https://github.com/mikefarah/yq/releases/download/3.3.2/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq 
           sudo npm install -g @controlplane/cli
           cpln --version
    
@@ -52,6 +53,8 @@ jobs:
         working-directory: ./cpln
         run: |
           sed -i "s/ORG_NAME/${CPLN_ORG}/" cpln-gvc.yaml
+          sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
+          sed -i "s/WORKLOAD_NAME/${CPLN_WORKLOAD}/" cpln-workload.yaml
           sed -i "s/IMAGE_NAME_TAG/${CPLN_IMAGE}:${{steps.vars.outputs.sha_short}}/" cpln-workload.yaml
 
       - name: Run CPLN Apply 
@@ -59,6 +62,6 @@ jobs:
         working-directory: ./cpln
         run: |
           cpln apply -f cpln-gvc.yaml
-          cpln apply -f cpln-workload.yaml --gvc $(yq r cpln-gvc.yaml name) 
-
+          cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
+          
 

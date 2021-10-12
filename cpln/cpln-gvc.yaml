@@ -1,5 +1,5 @@
 kind: gvc
-name: github-actions-example-cli-gvc
+name: GVC_NAME
 description: Actions Example
 spec:
   staticPlacement:

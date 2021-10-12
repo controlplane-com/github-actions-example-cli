@@ -1,5 +1,5 @@
 kind: workload
-name: github-actions-example-cli-workload
+name: WORKLOAD_NAME
 spec:
   containers:
     - args: []
