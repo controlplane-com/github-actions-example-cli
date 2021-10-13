@@ -1,7 +1,7 @@
-FROM node:14
+FROM node:16.6.2-bullseye-slim
 
 # Create app directory
-# WORKDIR /usr/src/app
+WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package*.json ./
