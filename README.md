@@ -1,6 +1,6 @@
 # Control Plane - GitHub Actions Example Using the CLI
 
-This example demonstrates building and deploying an app to Control Plane using the CLI (cpln) as part of a CI/CD pipeline. 
+This example demonstrates building and deploying an app to Control Plane using the CLI (cpln) as part of a GitHub Action. 
 
 The sample is a Node.js app that displays the environment variables and start-up arguments.
 
@@ -35,7 +35,7 @@ Browse to the Secrets page by clicking `Settings` (top menu bar), then `Secrets`
     - The workflow can be updated to be triggered on specific branches and actions (pushes, pull requests, etc.). The example is set to trigger on a push or pull request to the `main` branch on lines 9-11 (currently commented out).
     - The `sed` command is used to substitute the `ORG_NAME`, `GVC_NAME`, `WORKLOAD_NAME` and `IMAGE_NAME_TAG` tokens inside the YAML files in the `/cpln` directory on lines 55-58.
 
-4. Review the two YAML files in the `/cpln` directory:,
+4.  The Control Plane YAML files are located in the `/cpln` directory. No changes are required to execute the example.
     - The `cpln-gvc.yaml` file defines the GVC to be created/updated.
     - The `cpln-workload.yaml` file defines the workload to be created/updated. 
 
