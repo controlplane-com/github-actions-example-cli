@@ -46,7 +46,7 @@ After the GitHub Action has successfully deployed the application, it can be tes
 1. Browse to the Control Plane Console.
 2. Select the GVC that was set in the `/cpln/cpln-gvc.yaml` file.
 3. Select the workload that was set in the `/cpln/cpln-workload.yaml` file.
-4. Click the `Open` button. The app will open in a new tab. The containers' environment variables and start up arguments will be displayed.
+4. Click the `Open` button. The app will open in a new tab. The container's environment variables and start up arguments will be displayed.
 
 ## Notes
 
