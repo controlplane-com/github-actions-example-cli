@@ -2,7 +2,7 @@
 
 This example demonstrates building and deploying an app to Control Plane using the CLI (cpln) as part of a GitHub Action. 
 
-The sample is a Node.js app that displays the environment variables and start-up arguments.
+The example is a Node.js app that displays the environment variables and start-up arguments.
 
 This example is provided as a starting point and your own unique delivery and/or deployment requirements will dictate the steps needed in your situation.
 
