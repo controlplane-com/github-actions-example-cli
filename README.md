@@ -37,7 +37,7 @@ Add the following variables:
 
 3. Review the `.github/workflow/deploy-to-control-plane.yml` file:
     - The workflow can be updated to be triggered on specific branches and actions (pushes, pull requests, etc.). The example is set to trigger on a push or pull request to the `main` branch on lines 9-12 (currently commented out).
-    - The `sed` command is used to substitute the `ORG_NAME`, `CPLN_GVC_NAME`, `CPLN_WORKLOAD_NAME` and `CPLN_IMAGE_NAME` tokens inside the YAML files in the `/cpln` directory on lines 55-58.
+    - The `sed` command is used to substitute the `ORG_NAME`, `GVC_NAME`, `WORKLOAD_NAME` and `IMAGE_NAME_TAG` tokens inside the YAML files in the `/cpln` directory on lines 55-58.
 
 4.  The Control Plane YAML files are located in the `/cpln` directory. No changes are required to execute the example.
     - The `cpln-gvc.yaml` file defines the GVC to be created/updated.
