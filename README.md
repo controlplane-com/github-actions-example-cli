@@ -43,6 +43,14 @@ Add the following variables:
     - The `cpln-gvc.yaml` file defines the GVC to be created/updated.
     - The `cpln-workload.yaml` file defines the workload to be created/updated. 
 
+**To manually trigger the GitHub action:**
+
+1. From within the repository, click `Actions` (top menu).
+2. Click the `Deploy-To-Control-Plane` link under `Workflows`.
+3. Click the `Run workflow` pulldown button. 
+4. Select the branch to use.
+5. Click `Run workflow`.
+
 ## Running the App
 
 After the GitHub Action has successfully deployed the application, it can be tested by following these steps:
