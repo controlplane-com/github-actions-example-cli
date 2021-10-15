@@ -23,17 +23,21 @@ When triggered, the GitHub action will execute the steps defined in the workflow
 
 2. The following variables are required and must be added as GitHub repository secrets.
 
+```
 Browse to the Secrets page by clicking `Settings` (top menu bar), then `Secrets` (left menu bar).
+```
+
+Add the following variables:
 
 - `CPLN_ORG`: Control Plane org.
 - `CPLN_GVC`: The name of the GVC.
-- `CPLN_WORKLOAD`: The name of the workload.
-- `CPLN_TOKEN`: Service Account Key.
+- `CPLN_WORKLOAD_NAME`: The name of the workload.
+- `CPLN_TOKEN_NAME`: Service Account Key.
 - `CPLN_IMAGE_NAME`: The name of the image that will be deployed. The workflow will append the short SHA of the commit as the image tag when pushing the image to the org's private image repository.
 
 3. Review the `.github/workflow/deploy-to-control-plane.yml` file:
-    - The workflow can be updated to be triggered on specific branches and actions (pushes, pull requests, etc.). The example is set to trigger on a push or pull request to the `main` branch on lines 9-11 (currently commented out).
-    - The `sed` command is used to substitute the `ORG_NAME`, `GVC_NAME`, `WORKLOAD_NAME` and `IMAGE_NAME_TAG` tokens inside the YAML files in the `/cpln` directory on lines 55-58.
+    - The workflow can be updated to be triggered on specific branches and actions (pushes, pull requests, etc.). The example is set to trigger on a push or pull request to the `main` branch on lines 9-12 (currently commented out).
+    - The `sed` command is used to substitute the `ORG_NAME`, `CPLN_GVC_NAME`, `CPLN_WORKLOAD_NAME` and `CPLN_IMAGE_NAME` tokens inside the YAML files in the `/cpln` directory on lines 55-58.
 
 4.  The Control Plane YAML files are located in the `/cpln` directory. No changes are required to execute the example.
     - The `cpln-gvc.yaml` file defines the GVC to be created/updated.
@@ -44,8 +48,8 @@ Browse to the Secrets page by clicking `Settings` (top menu bar), then `Secrets`
 After the GitHub Action has successfully deployed the application, it can be tested by following these steps:
 
 1. Browse to the Control Plane Console.
-2. Select the GVC that was set in the `/cpln/cpln-gvc.yaml` file.
-3. Select the workload that was set in the `/cpln/cpln-workload.yaml` file.
+2. Select the GVC that was set in the `CPLN_GVC_NAME` secret.
+3. Select the workload that was set in the `CPLN_WORKLOAD_NAME` secret.
 4. Click the `Open` button. The app will open in a new tab. The container's environment variables and start up arguments will be displayed.
 
 ## Notes
