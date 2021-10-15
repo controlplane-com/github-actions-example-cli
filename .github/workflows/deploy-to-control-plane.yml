@@ -17,8 +17,8 @@ on:
 # Convert the GitHub secret variables to environment variables for use by the Control Plane CLI
 env:
   CPLN_ORG: ${{secrets.CPLN_ORG}}
-  CPLN_GVC: ${{secrets.CPLN_GVC}}
-  CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD}}
+  CPLN_GVC: ${{secrets.CPLN_GVC_NAME}}
+  CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD_NAME}}
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE_NAME}}
 
