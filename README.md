@@ -32,7 +32,7 @@ Add the following variables:
 - `CPLN_ORG`: Control Plane org.
 - `CPLN_GVC`: The name of the GVC.
 - `CPLN_WORKLOAD_NAME`: The name of the workload.
-- `CPLN_TOKEN_NAME`: Service Account Key.
+- `CPLN_TOKEN`: Service Account Key.
 - `CPLN_IMAGE_NAME`: The name of the image that will be deployed. The workflow will append the short SHA of the commit as the image tag when pushing the image to the org's private image repository.
 
 3. Review the `.github/workflow/deploy-to-control-plane.yml` file:
