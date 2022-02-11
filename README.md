@@ -30,7 +30,7 @@ Browse to the Secrets page by clicking `Settings` (top menu bar), then `Secrets`
 Add the following variables:
 
 - `CPLN_ORG`: Control Plane org.
-- `CPLN_GVC`: The name of the GVC.
+- `CPLN_GVC_NAME`: The name of the GVC.
 - `CPLN_WORKLOAD_NAME`: The name of the workload.
 - `CPLN_TOKEN`: Service Account Key.
 - `CPLN_IMAGE_NAME`: The name of the image that will be deployed. The workflow will append the short SHA of the commit as the image tag when pushing the image to the org's private image repository.
